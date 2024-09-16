@@ -1,6 +1,7 @@
 import { IsEmail, IsString, IsStrongPassword } from "class-validator";
+import UserType from "../Type/User.type";
 
-export class CreateUserDto {
+export class CreateUserDto implements UserType {
     @IsString()
     name: string;
 
