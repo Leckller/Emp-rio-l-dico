@@ -16,7 +16,7 @@ export default class LogInterceptor implements NestInterceptor {
             // pega a requisição http que chegou
             const request = context.switchToHttp().getRequest();
 
-            console.log(`Execução levou: ${Date.now() - dt} ms - Rota ${request.url}`);
+            console.log(`Execução levou: ${Date.now() - dt} ms - Rota: ${request.url} - Method ${request.method}`);
         }))
 
         // por fim pega o valor que o pipe armazenou e retorna como resposta

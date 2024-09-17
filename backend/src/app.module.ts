@@ -6,11 +6,13 @@ import ProductModule from './Product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import UserEntity from './User/Entity/user.entity';
 import ProductEntity from './Product/Entity/product.entity';
+import AuthModule from './auth/auth.module';
 
 @Module({
   imports: [
     UserModule, 
     ProductModule,
+    AuthModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       port: Number(process.env.DB_PORT) || 3306,
