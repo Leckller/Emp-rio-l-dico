@@ -1,25 +1,26 @@
-import { Column, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import ProductType from "../Type/product.type";
 
+@Entity({name: 'products'})
 export default class ProductEntity implements ProductType {
-    @PrimaryColumn({unsigned: true})
+    @PrimaryGeneratedColumn({unsigned: true})
     id: number;
 
     @Column({unique: true})
     name: string;
 
-    @Column()
+    @Column({})
     price: number;
 
-    @Column()
+    @Column({})
     description: string;
 
-    @Column()
+    @Column({})
     age: number;
 
-    @Column()
+    @Column({})
     group: number;
 
-    @Column()
+    @Column({})
     time: number;
 }

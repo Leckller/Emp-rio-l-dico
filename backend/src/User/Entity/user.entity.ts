@@ -1,9 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserType from "../Type/User.type";
 
-@Entity()
+@Entity({name: 'users'})
 export default class UserEntity implements UserType {
-    @PrimaryColumn({
+    @PrimaryGeneratedColumn({
         unsigned: true,
     })
     id: number;
