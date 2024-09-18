@@ -3,10 +3,12 @@ import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import UserEntity from "src/User/Entity/user.entity";
 import UserService from "src/User/user.service";
-import { Repository } from "typeorm";
+import { Repository, Timestamp } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import AuthPasswordDto from "./Dto/auth-password.dto";
 import { AuthTokenUserDto } from "./Dto/auth-token-user.dto";
+import { CreateUserDto } from "src/User/Dto/create-user.dto";
+import AuthForgetDto from "./Dto/auth-forget.dto";
 
 @Injectable()
 export default class AuthService {
@@ -16,10 +18,10 @@ export default class AuthService {
         @InjectRepository(UserEntity)  private readonly userRepository: Repository<UserEntity>
     ){}
 
-    createToken({id,email,name}: UserEntity) {
+    createToken(payload: any, id:number, expiresIn = "7 days") {
 
-        return this.jwtService.sign(new AuthTokenUserDto(name, id, email), {
-            expiresIn: "7 days",
+        return this.jwtService.sign(payload, {
+            expiresIn,
             subject: String(id),
             issuer: 'login',
             audience: 'users'
@@ -31,20 +33,6 @@ export default class AuthService {
 
         return this.jwtService.verify(token);
 
-    }
-
-    isValidToken (token: string) {
-        try {
-
-            this.checkToken(token);
-
-            return true;
-
-        } catch{
-
-            return false;
-
-        }
     }
 
     async login(email: string, password: string) {
@@ -63,34 +51,46 @@ export default class AuthService {
         
         }
 
-        return this.createToken(user);
+        return this.createToken(user, user.id);
 
     }
 
     async forget(email: string) {
 
-        const user = this.userRepository.findOne({where: {email}})
+        const user = await this.userRepository.findOne({where: {email}})
 
         if(!user) {throw new UnauthorizedException("Email incorreto.")}
 
 
         // TO-DO: Lançar um email com um token temporário para redefinição de senha
         // O token deve ser enviado para a rota reset e utilizar o serviço abaixo
-        return true;
+        return {token: this.createToken({email: user.email, reset: user.id + user.email + user.name + user.updatedAt} as AuthForgetDto, user.id, "2 minutes")};
 
     }
 
-    // TO DO: validar o token...
-    async reset(password: string, {email,id,name}: AuthTokenUserDto) {
+    async reset(password: string, token: AuthForgetDto) {
 
-        const user = await this.userRepository.findOne({where: {id, email, name}});
-         
-        await this.userRepository.update(user, {password});
+        const {email, reset} = token;
 
-        return this.createToken(user);
+        const user = await this.userRepository.findOne({where: {email}});
+        
+        if(reset !== (user.id + user.email + user.name + user.updatedAt)) {
+
+            throw new UnauthorizedException("Você não tem permissão para fazer isso");
+
+        }
+
+        await this.userRepository.update(user, {password, updatedAt: 'puts'});
+
+        return this.createToken({id: user.id, email: user.email, name: user.name}, user.id);
+
     }
 
-    async register() {
-        return this.userService
+    async register(newUser: CreateUserDto) {
+        
+        const {id, email, name} = await this.userService.createUser(newUser);
+        
+        return {token: this.createToken({id, email, name}, id)};
+
     }
 }

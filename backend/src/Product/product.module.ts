@@ -4,11 +4,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import ProductEntity from "./Entity/product.entity";
 import ProductService from "./product.service";
 import IdCheckMiddleware from "src/middlewares/id-check.middleware";
+import AuthModule from "src/auth/auth.module";
 
 @Module({
     controllers: [ProductController],
     providers: [ProductService],
     imports: [
+        AuthModule,
         TypeOrmModule.forFeature([ProductEntity])
     ]
 })

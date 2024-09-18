@@ -12,7 +12,6 @@ export default class UserService {
     async emailExists(email: string) {
         
         const findUser = await this.userRepository.findOne({where: {email}});
-        
         if(findUser) {
 
             return true;
@@ -26,7 +25,7 @@ export default class UserService {
 
     async createUser(newUser: CreateUserDto) {
 
-        if(!(await this.emailExists(newUser.email))) {
+        if(await this.emailExists(newUser.email)) {
 
             throw new BadRequestException('Este email já existe');
             

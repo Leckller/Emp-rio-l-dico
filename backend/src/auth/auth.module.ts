@@ -6,9 +6,10 @@ import UserModule from "src/User/user.module";
 
 @Module({
     providers: [AuthService],
-    controllers: [AuthController],
     exports: [AuthService],
+    controllers: [AuthController],
     imports: [
+        AuthModule,
         JwtModule.register({
         secret: 'abcd'
         }),

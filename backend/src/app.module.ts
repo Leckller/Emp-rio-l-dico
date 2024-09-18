@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import UserModule from './User/user.module';
 import ProductModule from './Product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import UserEntity from './User/Entity/user.entity';
 import ProductEntity from './Product/Entity/product.entity';
 import AuthModule from './auth/auth.module';
+import GuardModule from './guard/guard.module';
 
 @Module({
   imports: [
     UserModule, 
     ProductModule,
     AuthModule,
+    GuardModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       port: Number(process.env.DB_PORT) || 3306,
@@ -25,7 +25,5 @@ import AuthModule from './auth/auth.module';
       // synchronize: process.env.ENV === "development",
     })
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
