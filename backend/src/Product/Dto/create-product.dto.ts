@@ -21,6 +21,4 @@ export default class CreateProductDto implements Omit<ProductType, 'id'>
     
     @IsNumber()
     time: number;
-
-    // images: string[];
 }

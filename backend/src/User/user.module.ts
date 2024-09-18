@@ -1,15 +1,17 @@
-import { Module } from "@nestjs/common";
-import UserController from "./user.controller";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import UserEntity from "./Entity/user.entity";
+import UserService from "./user.service";
+import IdCheckMiddleware from "src/middlewares/id-check.middleware";
 
 @Module({
-    controllers: [UserController],
-    imports: [
+    providers: [UserService],
+    exports: [
+        UserService,
         TypeOrmModule.forFeature([UserEntity])
     ],
-    exports: [
+    imports: [
         TypeOrmModule.forFeature([UserEntity])
     ]
 })
-export default class UserModule {}
+export default class UserModule{}
