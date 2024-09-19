@@ -6,6 +6,7 @@ import UserEntity from './User/Entity/user.entity';
 import ProductEntity from './Product/Entity/product.entity';
 import AuthModule from './auth/auth.module';
 import GuardModule from './guard/guard.module';
+import ImageEntity from './Product/Entity/image.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import GuardModule from './guard/guard.module';
       username: process.env.DB_USERNAME || "root",
       password: process.env.DB_PASSWORD || "root",
       database: process.env.DB_DATABASE || "emporioludico",
-      entities: [UserEntity, ProductEntity],
+      entities: [UserEntity, ProductEntity, ImageEntity],
       synchronize: true,
       // synchronize: process.env.ENV === "development",
     })

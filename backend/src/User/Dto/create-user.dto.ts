@@ -1,7 +1,7 @@
 import { IsEmail, IsString, IsStrongPassword } from "class-validator";
 import UserType from "../Type/User.type";
 
-export class CreateUserDto implements UserType {
+export class CreateUserDto implements Partial<UserType> {
     @IsString()
     name: string;
 

@@ -3,6 +3,8 @@ import CreateProductDto from "./Dto/create-product.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import ProductEntity from "./Entity/product.entity";
 import { Repository } from "typeorm";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 
 @Injectable()
 export default class ProductService {
@@ -45,5 +47,26 @@ export default class ProductService {
         
         return await this.repository.save(p);
 
+    }
+
+    async uploadImages (images: Express.Multer.File[]) {
+
+        try {
+
+            const name = 'teste'
+        
+            images.forEach(async (image, index) => {
+
+                await writeFile(join(__dirname, '..', '..', 'storage', 'images', `${name}-${index}.png`), image.buffer);
+    
+            });
+            
+            return {ok: true}
+
+        } catch (e) {
+
+            throw new BadRequestException(e);
+
+        }
     }
 }

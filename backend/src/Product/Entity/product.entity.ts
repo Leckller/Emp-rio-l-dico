@@ -23,4 +23,8 @@ export default class ProductEntity implements ProductType {
 
     @Column({})
     time: number;
+
+    @Column({})
+    role: string;
+
 }

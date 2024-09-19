@@ -1,7 +1,7 @@
-import { isArray, IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 import ProductType from "../Type/product.type";
 
-export default class CreateProductDto implements Omit<ProductType, 'id'>
+export default class CreateProductDto implements Partial<ProductType>
 {
     @IsString()
     name: string;
@@ -18,7 +18,6 @@ export default class CreateProductDto implements Omit<ProductType, 'id'>
     @IsNumber()
     group: number;
 
-    
     @IsNumber()
     time: number;
 }

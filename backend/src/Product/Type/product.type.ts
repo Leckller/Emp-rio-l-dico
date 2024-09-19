@@ -6,4 +6,5 @@ export default interface ProductType {
     age: number;
     group: number;
     time: number;
+    role: string;
 }
