@@ -9,14 +9,13 @@ export class ProductController {
     constructor(private productService: ProductService) {}
 
     @Get('page/:page')
-    // Converte para inteiro / number
-    listProducts(@NumParam('page') page){
-        return {page}
+    async listProducts(@NumParam('page') page: number){
+        return await this.productService.getProducts(page);
     }
 
     @Get(':id')
-    productById(@NumParam('id') id) {
-        return {id}
+    async productById(@NumParam('id') id: number) {
+        return await this.productService.getProductById(id);
     }
 
     @Post()
