@@ -5,8 +5,6 @@ import UserEntity from "src/User/Entity/user.entity";
 import UserService from "src/User/user.service";
 import { Repository, Timestamp } from "typeorm";
 import * as bcrypt from 'bcrypt';
-import AuthPasswordDto from "./Dto/auth-password.dto";
-import { AuthTokenUserDto } from "./Dto/auth-token-user.dto";
 import { CreateUserDto } from "src/User/Dto/create-user.dto";
 import AuthForgetDto from "./Dto/auth-forget.dto";
 
